@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class extend extends Command {
 	private final climber m_climber;
-	private double position = 20;
+	private double position = 80;
 
 	public extend(climber climber){
 		m_climber = climber;

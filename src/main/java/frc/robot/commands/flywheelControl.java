@@ -11,7 +11,7 @@ public class flywheelControl extends Command {
 	private DoubleSupplier triggerAxis;
 
 	private double lowerSpeed = .5;
-	private double RPM = 3000;
+	private double RPM = 500;
 
 	private double firstThreshold = 1/3.;
 	private double secondThreshold = 2/3.;

@@ -18,11 +18,11 @@ public class RobotContainer {
 	private flywheel m_flywheel = new flywheel();
 	private flywheelControl m_flywheelControl = new flywheelControl(m_flywheel, purple);
 	
-	private climber m_Climber = new climber();
+	public climber m_climber = new climber();
 	private Trigger dpadUp = purple.povUp();
 	private Trigger dpadDown = purple.povDown();
-	private extend m_Extend = new extend(m_Climber);
-	private retract m_Retract = new retract(m_Climber);
+	private extend m_Extend = new extend(m_climber);
+	private retract m_Retract = new retract(m_climber);
 
 	public RobotContainer() {
 

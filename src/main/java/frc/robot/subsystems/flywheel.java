@@ -54,18 +54,17 @@ public class flywheel extends SubsystemBase {
 				.p(0.0001)
 				.i(0)
 				.d(0)
-				.outputRange(-1, 1)
+				.outputRange(0, 1)
 				.feedForward
 					.kS(0.03)
 					// kV is now in Volts, so we multiply by the nominal voltage (12V)
 					.kV(12.0 / 5767)
-					.kA(0);
+					.kA(12/(4000/1.0));
 
 			lVortexConfig.closedLoop.maxMotion
 				// Set MAXMotion parameters for position control. We don't need to pass
 				// a closed loop slot, as it will default to slot 0.
-				.maxAcceleration(500)
-				.allowedProfileError(1);
+				.maxAcceleration(2000);
 
 		SparkFlexConfig rVortexConfig = new SparkFlexConfig();
 			rVortexConfig.apply(lVortexConfig)

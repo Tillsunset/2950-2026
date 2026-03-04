@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.PersistMode;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -18,6 +19,8 @@ public class climber extends SubsystemBase {
 
 	private SparkClosedLoopController clc = vertical.getClosedLoopController();
 
+		private RelativeEncoder encoder = vertical.getEncoder();
+
 	public climber() {
 		SparkMaxConfig vConfig = new SparkMaxConfig();
 			vConfig.smartCurrentLimit(20)
@@ -25,7 +28,7 @@ public class climber extends SubsystemBase {
 			.idleMode(IdleMode.kBrake)
 			.closedLoop
 				.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-				.p(0.001)
+				.p(0.01)
 				.i(0)
 				.d(0)
 				.outputRange(-1, 1)
@@ -44,5 +47,11 @@ public class climber extends SubsystemBase {
 
 	public void setTargetPosition(double position) {
 		clc.setSetpoint(position , ControlType.kPosition);
+	}
+
+	
+	public void resetEncoder() {
+		
+		encoder.setPosition(0);
 	}
 }
