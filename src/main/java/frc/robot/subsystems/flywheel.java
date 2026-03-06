@@ -20,7 +20,7 @@ public class flywheel extends SubsystemBase {
 	private SparkFlex rightVortex = new SparkFlex(22, MotorType.kBrushless);
 	private SparkMax frontWheel = new SparkMax(15, MotorType.kBrushless);
 	private SparkMax backWheel = new SparkMax(2, MotorType.kBrushless);
-	private SparkMax conveyor = new SparkMax(5, MotorType.kBrushed);
+	private SparkMax conveyor = new SparkMax(21, MotorType.kBrushed);
 
 	private SparkClosedLoopController closedLoopController = leftVortex.getClosedLoopController();
 

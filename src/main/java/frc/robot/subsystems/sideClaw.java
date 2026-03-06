@@ -13,15 +13,15 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class climber extends SubsystemBase {
+public class sideClaw extends SubsystemBase {
 
-	private SparkMax vertical = new SparkMax(18, MotorType.kBrushless);
+	private SparkMax vertical = new SparkMax(11, MotorType.kBrushless);
 
 	private SparkClosedLoopController clc = vertical.getClosedLoopController();
 
-		private RelativeEncoder encoder = vertical.getEncoder(); 
+		private RelativeEncoder encoder = vertical.getEncoder();
 
-	public climber() {
+	public sideClaw() {
 		SparkMaxConfig vConfig = new SparkMaxConfig();
 			vConfig.smartCurrentLimit(20)
 			.inverted(false)

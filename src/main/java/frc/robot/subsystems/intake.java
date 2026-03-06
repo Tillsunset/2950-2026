@@ -18,8 +18,8 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 public class intake extends SubsystemBase {
 
 	private SparkMax leftArm = new SparkMax(16, MotorType.kBrushless);
-	private SparkMax rightArm = new SparkMax(21, MotorType.kBrushless);
-	public SparkMax wheel = new SparkMax(17, MotorType.kBrushed);
+	private SparkMax rightArm = new SparkMax(17, MotorType.kBrushless);
+	public SparkMax wheel = new SparkMax(4, MotorType.kBrushed);
 
 	private SparkClosedLoopController leftClosedLoopController = leftArm.getClosedLoopController();
 	private SparkClosedLoopController rightClosedLoopController = rightArm.getClosedLoopController();

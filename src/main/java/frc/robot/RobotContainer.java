@@ -24,6 +24,13 @@ public class RobotContainer {
 	private extend m_Extend = new extend(m_climber);
 	private retract m_Retract = new retract(m_climber);
 
+	public sideClaw m_sideClaw = new sideClaw();
+	private Trigger dpadLeft = purple.povLeft();
+	private Trigger dpadRight = purple.povRight();
+	private clawStow m_clawStow = new  clawStow(m_sideClaw);
+	private clawDeploy m_clawDeploy = new clawDeploy(m_sideClaw);
+
+	private CommandXboxController green = new CommandXboxController(1);
 	public RobotContainer() {
 
 		m_intake.setDefaultCommand(m_intakeControl);
@@ -35,6 +42,8 @@ public class RobotContainer {
 	private void configureBindings() {
 		dpadUp.onTrue(m_Extend);
 		dpadDown.onTrue(m_Retract);
+		dpadLeft.onTrue(m_clawStow);
+		dpadRight.onTrue(m_clawDeploy);
 	}
 
 	public Command getAutonomousCommand() {
