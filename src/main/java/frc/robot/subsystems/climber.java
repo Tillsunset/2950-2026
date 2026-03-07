@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class climber extends SubsystemBase {
 
-	private SparkMax vertical = new SparkMax(18, MotorType.kBrushless);
+	private SparkMax vertical = new SparkMax(11, MotorType.kBrushless);
 
 	private SparkClosedLoopController clc = vertical.getClosedLoopController();
 
@@ -24,7 +24,7 @@ public class climber extends SubsystemBase {
 	public climber() {
 		SparkMaxConfig vConfig = new SparkMaxConfig();
 			vConfig.smartCurrentLimit(20)
-			.inverted(false)
+			.inverted(true)
 			.idleMode(IdleMode.kBrake)
 			.closedLoop
 				.feedbackSensor(FeedbackSensor.kPrimaryEncoder)

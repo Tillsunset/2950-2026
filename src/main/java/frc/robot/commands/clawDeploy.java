@@ -1,8 +1,6 @@
 package frc.robot.commands;
 
-import frc.robot.subsystems.climber;
 import frc.robot.subsystems.sideClaw;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class clawDeploy extends Command {

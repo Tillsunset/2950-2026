@@ -11,7 +11,7 @@ public class intakeControl extends Command {
 	private DoubleSupplier triggerAxis;
 
 	private double armMin = 0;
-	private double armMax = 32 * 45/(4.0 * 12);
+	private double armMax = 32 * 55/(4.0 * 12);
 
 	public intakeControl(intake intake, CommandXboxController x) {
 		triggerAxis = x::getRightTriggerAxis;
