@@ -2,21 +2,21 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.climber;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class retract extends Command {
+public class climberControl extends Command {
 	private final climber m_climber;
-	private double position = 0;
+	private double m_position = 0;
 
-	public retract(climber climber){
+	public climberControl(climber climber, double position){
 		m_climber = climber;
+		m_position = position;
 		addRequirements(m_climber);
 	}
 
 	@Override
 	public void initialize() {
-		m_climber.setTargetPosition(position);
+		m_climber.setTargetPosition(m_position);
 	}
 
 	@Override
