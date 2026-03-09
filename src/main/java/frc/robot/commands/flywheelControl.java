@@ -10,11 +10,11 @@ public class flywheelControl extends Command {
 	private final flywheel m_flywheel;
 	private DoubleSupplier triggerAxis;
 
-	private double lowerSpeed = .5;
-	private double RPM = 1000;
+	private double feederPercent = .5;
+	private double flywheelRPM = 1000;
 
-	private double firstThreshold = 1/3.;
-	private double secondThreshold = 2/3.;
+	private double firstThreshold = 0.3;
+	private double secondThreshold = 0.7;
 
 	public flywheelControl(flywheel flywheel, CommandXboxController x) {
 		triggerAxis = x::getLeftTriggerAxis;
@@ -28,8 +28,9 @@ public class flywheelControl extends Command {
 
 	@Override
 	public void execute() {
-		m_flywheel.setLower(lowerSpeed * ((triggerAxis.getAsDouble() > secondThreshold) ? 1:0));
-		m_flywheel.setTargetRPM(RPM * ((triggerAxis.getAsDouble() > firstThreshold) ? 1:0));
+		// on/off control
+		m_flywheel.setTargetRPM(flywheelRPM * 	((Math.abs(triggerAxis.getAsDouble()) > firstThreshold)  ? 1 : 0)); // first start flywheel 
+		m_flywheel.setLower(feederPercent * 	((Math.abs(triggerAxis.getAsDouble()) > secondThreshold) ? 1 : 0)); // then start feeding 
 	}
 
 	@Override

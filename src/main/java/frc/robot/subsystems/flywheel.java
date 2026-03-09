@@ -18,6 +18,7 @@ public class flywheel extends SubsystemBase {
 
 	private SparkFlex leftVortex = new SparkFlex(23, MotorType.kBrushless);
 	private SparkFlex rightVortex = new SparkFlex(22, MotorType.kBrushless);
+
 	private SparkMax frontWheel = new SparkMax(15, MotorType.kBrushless);
 	private SparkMax backWheel = new SparkMax(2, MotorType.kBrushless);
 	private SparkMax conveyor = new SparkMax(21, MotorType.kBrushed);
@@ -25,24 +26,6 @@ public class flywheel extends SubsystemBase {
 	private SparkClosedLoopController closedLoopController = leftVortex.getClosedLoopController();
 
 	public flywheel() {
-		SparkMaxConfig fConfig = new SparkMaxConfig();
-			fConfig.inverted(true)
-				.idleMode(IdleMode.kBrake)
-				.smartCurrentLimit(40);
-
-		SparkMaxConfig bConfig = new SparkMaxConfig();
-			bConfig.apply(fConfig)
-				.inverted(false);
-		
-		SparkMaxConfig wheelConfig = new SparkMaxConfig();
-			wheelConfig.apply(fConfig)
-				.inverted(false);
-
-		frontWheel.configure(fConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-		backWheel.configure(bConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-		conveyor.configure(wheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-
 		SparkFlexConfig lVortexConfig = new SparkFlexConfig();
 			lVortexConfig.smartCurrentLimit(80)
 			.inverted(true);
@@ -69,9 +52,28 @@ public class flywheel extends SubsystemBase {
 		SparkFlexConfig rVortexConfig = new SparkFlexConfig();
 			rVortexConfig.apply(lVortexConfig)
 				.follow(leftVortex, true);
+				// follow leftvortex, invert direction
 
 		leftVortex.configure(lVortexConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 		rightVortex.configure(rVortexConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+		SparkMaxConfig fConfig = new SparkMaxConfig();
+			fConfig.inverted(true)
+				.idleMode(IdleMode.kBrake)
+				.smartCurrentLimit(40);
+
+		SparkMaxConfig bConfig = new SparkMaxConfig();
+			bConfig.apply(fConfig)
+				.inverted(false);
+		
+		SparkMaxConfig wheelConfig = new SparkMaxConfig();
+			wheelConfig.apply(fConfig)
+				.inverted(false);
+
+		frontWheel.configure(fConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+		backWheel.configure(bConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+		conveyor.configure(wheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
 	}
 
 	@Override

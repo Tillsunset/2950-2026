@@ -34,7 +34,7 @@ public class intake extends SubsystemBase {
 		SparkMaxConfig rConfig = new SparkMaxConfig();
 		rConfig.inverted(true)
 			.idleMode(IdleMode.kBrake)
-			.smartCurrentLimit(30)
+			.smartCurrentLimit(20)
 			.closedLoop
 			.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
 				.p(0.015)
@@ -45,11 +45,12 @@ public class intake extends SubsystemBase {
 		SparkMaxConfig lConfig = new SparkMaxConfig();
 		lConfig.apply(rConfig)
 			.inverted(false);
+			// no follow due to 'loose' arm
 
 		
 		SparkMaxConfig wheelConfig = new SparkMaxConfig();
 		wheelConfig
-			.smartCurrentLimit(80)
+			.smartCurrentLimit(40)
 			.inverted(true)
 			.idleMode(IdleMode.kCoast);
 
@@ -70,6 +71,7 @@ public class intake extends SubsystemBase {
 	}
 
 	public void updateTargetAngle(double target) {
+		// no follow due to 'loose' arm, separate CLC
 		leftClosedLoopController.setSetpoint(target, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward, ArbFFUnits.kPercentOut);
 		rightClosedLoopController.setSetpoint(target, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward, ArbFFUnits.kPercentOut);
 	}
