@@ -18,6 +18,9 @@ import frc.robot.subsystems.swervedrive;
 import java.io.File;
 import swervelib.SwerveInputStream;
 
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very
@@ -29,7 +32,14 @@ import swervelib.SwerveInputStream;
 public class RobotContainer {
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
-	final CommandXboxController driverXbox = new CommandXboxController(0);
+	final CommandXboxController controller0 = new CommandXboxController(0);
+
+	public intake m_intake = new intake();
+	private intakeControl m_intakeControl = new intakeControl(m_intake, controller0);
+
+	private flywheel m_flywheel = new flywheel();
+	private flywheelControl m_flywheelControl = new flywheelControl(m_flywheel, controller0);
+
 	// The robot's subsystems and commands are defined here...
 	private final swervedrive drivebase = new swervedrive(new File(Filesystem.getDeployDirectory(),
 			"swerve"));
@@ -43,9 +53,9 @@ public class RobotContainer {
 	 * by angular velocity.
 	 */
 	SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-			() -> driverXbox.getLeftY() * -1,
-			() -> driverXbox.getLeftX() * -1)
-			.withControllerRotationAxis(driverXbox::getRightX)
+			() -> controller0.getLeftY() * -1,
+			() -> controller0.getLeftX() * -1)
+			.withControllerRotationAxis(controller0::getRightX)
 			.deadband(OperatorConstants.DEADBAND)
 			.scaleTranslation(0.8)
 			.allianceRelativeControl(true);
@@ -54,8 +64,8 @@ public class RobotContainer {
 	 * Clone's the angular velocity input stream and converts it to a fieldRelative
 	 * input stream.
 	 */
-	SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(driverXbox::getRightX,
-			driverXbox::getRightY)
+	SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(controller0::getRightX,
+			controller0::getRightY)
 			.headingWhile(true);
 
 	/**
@@ -70,6 +80,9 @@ public class RobotContainer {
 	 */
 	public RobotContainer() {
 		// Configure the trigger bindings
+		m_intake.setDefaultCommand(m_intakeControl);
+		m_flywheel.setDefaultCommand(m_flywheelControl);
+		
 		configureBindings();
 		DriverStation.silenceJoystickConnectionWarning(true);
 
@@ -108,8 +121,8 @@ public class RobotContainer {
 
 		drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
 
-		driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-		driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+		controller0.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+		controller0.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 	}
 
 	/**
