@@ -18,17 +18,17 @@ public class RobotContainer {
 	private flywheel m_flywheel = new flywheel();
 	private flywheelControl m_flywheelControl = new flywheelControl(m_flywheel, controller0);
 	
-	public climber m_climber = new climber();
-	private climberControl m_Retract = new climberControl(m_climber, 0);
-	private climberControl m_Extend = new climberControl(m_climber, 80);
-	private Trigger dpadUp = controller0.povUp();
-	private Trigger dpadDown = controller0.povDown();
+	// public climber m_climber = new climber();
+	// private climberControl m_Retract = new climberControl(m_climber, 0);
+	// private climberControl m_Extend = new climberControl(m_climber, 80);
+	// private Trigger dpadUp = controller0.povUp();
+	// private Trigger dpadDown = controller0.povDown();
 
-	public sideClaw m_sideClaw = new sideClaw();
-	private clawControl m_clawStow = new clawControl(m_sideClaw, 0);
-	private clawControl m_clawDeploy = new clawControl(m_sideClaw, 80);
-	private Trigger dpadLeft = controller0.povLeft();
-	private Trigger dpadRight = controller0.povRight();
+	// public sideClaw m_sideClaw = new sideClaw();
+	// private clawControl m_clawStow = new clawControl(m_sideClaw, 0);
+	// private clawControl m_clawDeploy = new clawControl(m_sideClaw, 80);
+	// private Trigger dpadLeft = controller0.povLeft();
+	// private Trigger dpadRight = controller0.povRight();
 
 	private CommandXboxController green = new CommandXboxController(1);
 
@@ -40,10 +40,10 @@ public class RobotContainer {
 	}
 	
 	private void configureBindings() {
-		dpadUp.onTrue(m_Extend);
-		dpadDown.onTrue(m_Retract);
-		dpadLeft.onTrue(m_clawStow);
-		dpadRight.onTrue(m_clawDeploy);
+		// dpadUp.onTrue(m_Extend);
+		// dpadDown.onTrue(m_Retract);
+		// dpadLeft.onTrue(m_clawStow);
+		// dpadRight.onTrue(m_clawDeploy);
 	}
 
 	public Command getAutonomousCommand() {

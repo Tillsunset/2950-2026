@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.climber;
-
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class climberControl extends Command {
