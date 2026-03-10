@@ -9,7 +9,7 @@ public class clawControl extends Command {
 
 	public clawControl(sideClaw sideClaw, double position){
 		m_sideClaw = sideClaw;
-		m_position = position
+		m_position = position;
 		addRequirements(m_sideClaw);
 	}
 
