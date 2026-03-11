@@ -84,7 +84,9 @@ public class flywheel extends SubsystemBase {
 		frontWheel.set(percent);
 		backWheel.set(percent);
 		conveyor.set(percent);
+
 	}
+	
 
 	public void setTargetRPM(double rpm) {
 		closedLoopController.setSetpoint(rpm, ControlType.kMAXMotionVelocityControl);

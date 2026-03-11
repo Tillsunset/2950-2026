@@ -50,7 +50,7 @@ public class intake extends SubsystemBase {
 		
 		SparkMaxConfig wheelConfig = new SparkMaxConfig();
 		wheelConfig
-			.smartCurrentLimit(40)
+			.smartCurrentLimit(60)
 			.inverted(true)
 			.idleMode(IdleMode.kCoast);
 
