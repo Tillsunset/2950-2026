@@ -14,7 +14,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class conveyor {
+public class conveyor extends SubsystemBase {
 
 	private SparkMax conveyorMotor = new SparkMax(21, MotorType.kBrushed);
 
