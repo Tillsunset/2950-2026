@@ -20,11 +20,11 @@ public class conveyor extends SubsystemBase {
 
 	public conveyor() {
 		SparkMaxConfig Config = new SparkMaxConfig();
-			fConfig.inverted(true)
+		Config.inverted(true)
 				.idleMode(IdleMode.kBrake)
 				.smartCurrentLimit(40);
 
-		conveyor.configure(wheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+				conveyorMotor.configure(Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 	}
 
 	@Override
@@ -32,6 +32,6 @@ public class conveyor extends SubsystemBase {
 	}
 
 	public void setConveyer( double percent){
-		conveyor.set(percent);
+		conveyorMotor.set(percent);
 	}
 }
