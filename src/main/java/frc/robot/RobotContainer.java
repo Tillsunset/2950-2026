@@ -40,6 +40,9 @@ public class RobotContainer {
 	private flywheel m_flywheel = new flywheel();
 	private flywheelControl m_flywheelControl = new flywheelControl(m_flywheel, controller0);
 
+	private conveyor m_conveyor = new conveyor();
+	private conveyorControl m_conveyorControl = new conveyorControl(m_conveyor, controller0);
+
 	// The robot's subsystems and commands are defined here...
 	private final swervedrive drivebase = new swervedrive(new File(Filesystem.getDeployDirectory(),
 			"swerve"));
@@ -120,6 +123,9 @@ public class RobotContainer {
 		Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
 
 		drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
+		flywheel.setDefaultCommand(flywheelControl);
+		intake.setDefaultCommand(intakeControl);
+		conveyor.setDefaultCommand(conveyorControl);
 
 		controller0.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
 		controller0.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());

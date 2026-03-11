@@ -31,9 +31,9 @@ public class intakeControl extends Command {
 	@Override
 	public void execute() {
 		// scales the first half of the left trigger to arm position
-		double armScaled = armMin + (armMax - armMin) * 2 * Math.min(0.5, Math.abs(triggerAxis.getAsDouble()));
-		// scales trigger to full wheel
-		double wheelScaled = Math.abs(triggerAxis.getAsDouble());
+		double armScaled = armMin + (armMax - armMin) * (Math.min(0.5, Math.abs(triggerAxis.getAsDouble())) / 0.5);
+				// scales the first half trigger to full wheel
+				double wheelScaled = (Math.min(0.5, Math.abs(triggerAxis.getAsDouble())) / 0.5);
 
 		m_intake.setWheel(wheelScaled);
 		m_intake.updateTargetAngle(armScaled);

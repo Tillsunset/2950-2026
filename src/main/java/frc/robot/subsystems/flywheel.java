@@ -21,7 +21,6 @@ public class flywheel extends SubsystemBase {
 
 	private SparkMax frontWheel = new SparkMax(15, MotorType.kBrushless);
 	private SparkMax backWheel = new SparkMax(2, MotorType.kBrushless);
-	private SparkMax conveyor = new SparkMax(21, MotorType.kBrushed);
 
 	private SparkClosedLoopController closedLoopController = leftVortex.getClosedLoopController();
 
@@ -65,15 +64,9 @@ public class flywheel extends SubsystemBase {
 		SparkMaxConfig bConfig = new SparkMaxConfig();
 			bConfig.apply(fConfig)
 				.inverted(false);
-		
-		SparkMaxConfig wheelConfig = new SparkMaxConfig();
-			wheelConfig.apply(fConfig)
-				.inverted(false);
 
 		frontWheel.configure(fConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 		backWheel.configure(bConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-		conveyor.configure(wheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
 	}
 
 	@Override
@@ -83,8 +76,6 @@ public class flywheel extends SubsystemBase {
 	public void setLower(double percent) {
 		frontWheel.set(percent);
 		backWheel.set(percent);
-		conveyor.set(percent);
-
 	}
 	
 
