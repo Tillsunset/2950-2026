@@ -8,7 +8,7 @@ public class conveyor {
 
 	private SparkMax conveyorMotor = new SparkMax(21, MotorType.kBrushed);
 
-	public flywheel() {
+	public conveyor() {
 		SparkMaxConfig Config = new SparkMaxConfig();
 			fConfig.inverted(true)
 				.idleMode(IdleMode.kBrake)
