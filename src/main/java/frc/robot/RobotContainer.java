@@ -85,6 +85,7 @@ public class RobotContainer {
 		// Configure the trigger bindings
 		m_intake.setDefaultCommand(m_intakeControl);
 		m_flywheel.setDefaultCommand(m_flywheelControl);
+		m_conveyor.setDefaultCommand(m_conveyorControl);
 		
 		configureBindings();
 		DriverStation.silenceJoystickConnectionWarning(true);
@@ -123,9 +124,6 @@ public class RobotContainer {
 		Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
 
 		drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
-		flywheel.setDefaultCommand(flywheelControl);
-		intake.setDefaultCommand(intakeControl);
-		conveyor.setDefaultCommand(conveyorControl);
 
 		controller0.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
 		controller0.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
