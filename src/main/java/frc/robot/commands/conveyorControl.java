@@ -35,6 +35,9 @@ public class conveyorControl extends Command {
 			(Math.abs(triggerRAxis.getAsDouble()) > intakeThreshold)) {
 				m_conveyor.setConveyer(conveyorPercent);
 		}
+		else {
+			m_conveyor.setConveyer(0);
+		}
 	}
 
 	@Override
