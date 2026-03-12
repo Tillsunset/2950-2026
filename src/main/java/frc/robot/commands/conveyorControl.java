@@ -24,6 +24,7 @@ public class conveyorControl extends Command {
 		addRequirements(m_conveyor);
 	}
 
+	
 	@Override
 	public void initialize() {
 	}
