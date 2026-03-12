@@ -25,18 +25,12 @@ public class conveyor extends SubsystemBase {
 				.idleMode(IdleMode.kBrake)
 				.smartCurrentLimit(40);
 
-				conveyorMotor.configure(Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+		conveyorMotor.configure(Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+		SparkMaxConfig spinConfig = new SparkMaxConfig();
+			spinConfig.apply(Config);
+		spindexerMotor.configure(spinConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 	}
-
-	public void spindexer() {
-		SparkMaxConfig Config = new SparkMaxConfig();
-		Config.inverted(true)
-				.idleMode(IdleMode.kBrake)
-				.smartCurrentLimit(40);
-
-				conveyorMotor.configure(Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-	}
-
 
 	@Override
 	public void periodic() {
