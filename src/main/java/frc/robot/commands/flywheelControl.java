@@ -10,11 +10,11 @@ public class flywheelControl extends Command {
 	private final flywheel m_flywheel;
 	private DoubleSupplier triggerAxis;
 
-	private double feederPercent = .65;
-	private double flywheelRPM = 3100;
+	private double feederPercent = 1.00;
+	private double flywheelRPM = 3000;
 
 	private double firstThreshold = 0.3;
-	private double secondThreshold = 0.;
+	private double secondThreshold = 0.6;
 
 	public flywheelControl(flywheel flywheel, CommandXboxController x) {
 		triggerAxis = x::getLeftTriggerAxis;

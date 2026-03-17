@@ -19,7 +19,7 @@ public class intake extends SubsystemBase {
 
 	private SparkMax leftArm = new SparkMax(16, MotorType.kBrushless);
 	private SparkMax rightArm = new SparkMax(17, MotorType.kBrushless);
-	public SparkMax wheel = new SparkMax(4, MotorType.kBrushed);
+	public SparkMax wheel = new SparkMax(4, MotorType.kBrushless);
 
 	private SparkClosedLoopController leftClosedLoopController = leftArm.getClosedLoopController();
 	private SparkClosedLoopController rightClosedLoopController = rightArm.getClosedLoopController();

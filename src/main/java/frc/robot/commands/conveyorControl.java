@@ -13,7 +13,7 @@ public class conveyorControl extends Command {
 	private DoubleSupplier triggerRAxis;
 
 	private double intakeThreshold = 0.3;
-	private double flywheelThreshold = 0.3;
+	private double flywheelThreshold = 0.6;
 	
 	private double conveyorPercent = .65;
 

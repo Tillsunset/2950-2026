@@ -12,18 +12,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class conveyor extends SubsystemBase {
 
 	private SparkMax conveyorMotor = new SparkMax(21, MotorType.kBrushed);
-    private SparkMax spindexerMotor = new SparkMax(11, MotorType.kBrushless);
+    private SparkMax spindexerMotor = new SparkMax(18, MotorType.kBrushless);
 
 	public conveyor() {
 		SparkMaxConfig Config = new SparkMaxConfig();
-		Config.inverted(true)
+		Config.inverted(false)
 				.idleMode(IdleMode.kBrake)
 				.smartCurrentLimit(40);
 
 		conveyorMotor.configure(Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
 		SparkMaxConfig spinConfig = new SparkMaxConfig();
-			spinConfig.apply(Config);
+			spinConfig.apply(Config)
+			.inverted(true);
 		spindexerMotor.configure(spinConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 	}
 
