@@ -5,7 +5,6 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.intake;
-import frc.robot.subsystems.flywheel;
 
 public class intakeControl extends Command {
 	private final intake m_intake;
