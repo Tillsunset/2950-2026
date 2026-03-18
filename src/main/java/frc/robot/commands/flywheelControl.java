@@ -49,7 +49,7 @@ public class flywheelControl extends Command {
 			for (RawFiducial object : raw){
 				filter.calculate(object.distToCamera);
 			}
-			double predictedRPM = Helper.rpmFromInches(filter.lastValue());
+			double predictedRPM = Helper.rpmFromInches(filter.lastValue() * Math.cos(Math.toRadians(20)));
 			m_flywheel.setTargetRPM(predictedRPM);
 		}
 		else {
