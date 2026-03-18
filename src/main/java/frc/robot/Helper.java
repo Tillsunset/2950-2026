@@ -2,11 +2,12 @@ package frc.robot;
 
 import java.util.Optional;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class Helper {
-    public static boolean isHubActive() {
+    public static boolean isOurHubActive() {
         Optional<Alliance> alliance = DriverStation.getAlliance();
         if (alliance.isEmpty()) {
             // If we have no alliance, we cannot be enabled, therefore no hub.
@@ -69,5 +70,15 @@ public class Helper {
         double matchTime = DriverStation.getMatchTime();
 
         return (matchTime - 30) % 25;
+    }
+
+    public static double rpmFromInches(double inches) {
+        double offsetToCenter = inches + 36;
+        double rpmGuess = offsetToCenter * 14.88 + 1425;
+        return MathUtil.clamp(rpmGuess, 1500, 3500);
+    }
+
+    public static double rpmFromMeters(double meters) {
+        return rpmFromInches(meters * 39.37);
     }
 }

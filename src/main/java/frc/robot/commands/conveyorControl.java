@@ -12,10 +12,10 @@ public class conveyorControl extends Command {
 	private DoubleSupplier triggerLAxis;
 	private DoubleSupplier triggerRAxis;
 
-	private double intakeThreshold = 0.3;
-	private double flywheelThreshold = 0.6;
+	private double intakeThreshold = 0.5;
+	private double flywheelThreshold = 0.8;
 	
-	private double conveyorPercent = .65;
+	private double conveyorPercent = .5;
 
 	public conveyorControl(conveyor conveyor, CommandXboxController x) {
 		triggerLAxis = x::getLeftTriggerAxis;
