@@ -94,7 +94,12 @@ public class RobotContainer {
 
 		// Set the default auto (do nothing)
 		autoChooser.setDefaultOption("Do Nothing", Commands.runOnce(drivebase::zeroGyroWithAlliance)
-				.andThen(Commands.none()));
+				.andThen(Commands.none()));// Set the default auto (do nothing)
+
+		autoChooser.setDefaultOption("Try to shoot balls", 
+			Commands.parallel(
+				new flywheelAutoFeed(m_flywheel, m_conveyor),
+				new flywheelAIM(drivebase)).withTimeout(10));
 
 		// Add a simple auto option to have the robot drive forward for 1 second then
 		// stop
@@ -138,6 +143,10 @@ public class RobotContainer {
 		controller0.povLeft().whileTrue(m_flywheelControl3000);
 		controller0.povUp().whileTrue(m_flywheelControl3500);
 		controller0.leftBumper().whileTrue(m_flywheelAutoFeed);
+		// controller0.leftBumper().whileTrue(
+		// 	Commands.parallel(
+		// 		new flywheelAutoFeed(m_flywheel, m_conveyor),
+		// 		new flywheelAIM(drivebase)));
 	}
 
 	/**
