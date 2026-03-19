@@ -19,6 +19,7 @@ import java.io.File;
 import swervelib.SwerveInputStream;
 
 import frc.robot.commands.*;
+import frc.robot.commands.flywheel.*;
 import frc.robot.subsystems.*;
 
 /**
@@ -37,11 +38,16 @@ public class RobotContainer {
 	public intake m_intake = new intake();
 	private intakeControl m_intakeControl = new intakeControl(m_intake, controller0);
 
-	private flywheel m_flywheel = new flywheel();
-	private flywheelControl m_flywheelControl = new flywheelControl(m_flywheel, controller0);
-
 	private conveyor m_conveyor = new conveyor();
 	private conveyorControl m_conveyorControl = new conveyorControl(m_conveyor, controller0);
+
+	private flywheel m_flywheel = new flywheel();
+	private flywheelDynamic m_flywheelControl = new flywheelDynamic(m_flywheel, controller0);
+	private flywheelStatic m_flywheelControl2400 = new flywheelStatic(m_flywheel, 2400); // minimum, right next to hopper
+	private flywheelStatic m_flywheelControl2500 = new flywheelStatic(m_flywheel, 2500);
+	private flywheelStatic m_flywheelControl3000 = new flywheelStatic(m_flywheel, 3000);
+	private flywheelStatic m_flywheelControl3500 = new flywheelStatic(m_flywheel, 3500);
+	private flywheelAutoFeed m_flywheelAutoFeed = new flywheelAutoFeed(m_flywheel, m_conveyor);
 
 	// The robot's subsystems and commands are defined here...
 	private final swervedrive drivebase = new swervedrive(new File(Filesystem.getDeployDirectory(),
@@ -83,10 +89,6 @@ public class RobotContainer {
 	 */
 	public RobotContainer() {
 		// Configure the trigger bindings
-		m_intake.setDefaultCommand(m_intakeControl);
-		m_flywheel.setDefaultCommand(m_flywheelControl);
-		m_conveyor.setDefaultCommand(m_conveyorControl);
-		
 		configureBindings();
 		DriverStation.silenceJoystickConnectionWarning(true);
 
@@ -96,8 +98,8 @@ public class RobotContainer {
 
 		// Add a simple auto option to have the robot drive forward for 1 second then
 		// stop
-		autoChooser.addOption("Drive Forward", Commands.runOnce(drivebase::zeroGyroWithAlliance).withTimeout(.2)
-				.andThen(drivebase.driveForward().withTimeout(1)));
+		// autoChooser.addOption("Drive Forward", Commands.runOnce(drivebase::zeroGyroWithAlliance).withTimeout(.2)
+		// 		.andThen(drivebase.driveForward().withTimeout(1)));
 		// Put the autoChooser on the SmartDashboard
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -124,9 +126,18 @@ public class RobotContainer {
 		Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
 
 		drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
+		m_intake.setDefaultCommand(m_intakeControl);
+		m_flywheel.setDefaultCommand(m_flywheelControl);
+		m_conveyor.setDefaultCommand(m_conveyorControl);
 
 		controller0.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-		controller0.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+		controller0.rightBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+
+		controller0.povRight().whileTrue(m_flywheelControl2400);
+		controller0.povDown().whileTrue(m_flywheelControl2500);
+		controller0.povLeft().whileTrue(m_flywheelControl3000);
+		controller0.povUp().whileTrue(m_flywheelControl3500);
+		controller0.leftBumper().whileTrue(m_flywheelAutoFeed);
 	}
 
 	/**

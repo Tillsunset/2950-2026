@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class Helper {
+
     public static boolean isOurHubActive() {
         Optional<Alliance> alliance = DriverStation.getAlliance();
         if (alliance.isEmpty()) {
@@ -72,13 +73,35 @@ public class Helper {
         return (matchTime - 30) % 25;
     }
 
-    public static double rpmFromInches(double inches) {
-        double offsetToCenter = inches + 36;
-        double rpmGuess = offsetToCenter * 14.88 + 1425;
-        return MathUtil.clamp(rpmGuess, 1500, 3500);
+    public static double rpmFromMeters(double meters) {
+        double x1 = 1.0;
+        double y1 = 2500.0;
+        double x2 = 1.5;
+        double y2 = 3000.0;
+        double x3 = 2.0;
+        double y3 = 3500.0;
+
+        double rpmGuess = 2400.0;
+
+        if (meters > x2) {
+            rpmGuess = y2 + (meters - x2) * (y3 - y2) / (x3-x2);
+            return MathUtil.clamp(rpmGuess, 2400, 3500);
+        }
+        else { // meters < x2
+            rpmGuess = y1 + (meters - x1) * (y2 - y1) / (x2-x1);
+            return MathUtil.clamp(rpmGuess, 2400, 3500);
+        }
     }
 
-    public static double rpmFromMeters(double meters) {
-        return rpmFromInches(meters * 39.37);
+	private static int i = 0;
+
+    public static void printRPMDistance(double rpm, double distance) {
+        if (i % 10 == 0) {
+			System.out.println(rpm);
+			System.out.println(distance);
+			System.out.println("*****************");
+		}
+
+		++i;
     }
 }

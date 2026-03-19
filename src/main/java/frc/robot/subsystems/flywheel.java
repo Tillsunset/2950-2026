@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.PersistMode;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -23,6 +24,8 @@ public class flywheel extends SubsystemBase {
 	private SparkMax backWheel = new SparkMax(2, MotorType.kBrushless);
 
 	private SparkClosedLoopController closedLoopController = leftVortex.getClosedLoopController();
+
+	private RelativeEncoder encoder = leftVortex.getEncoder(); 
 
 	public flywheel() {
 		SparkFlexConfig lVortexConfig = new SparkFlexConfig();
@@ -77,9 +80,12 @@ public class flywheel extends SubsystemBase {
 		frontWheel.set(percent);
 		backWheel.set(percent);
 	}
-	
 
 	public void setTargetRPM(double rpm) {
 		closedLoopController.setSetpoint(rpm, ControlType.kMAXMotionVelocityControl);
+	}
+
+	public double getCurrentRPM() {
+		return Math.abs(encoder.getVelocity());
 	}
 }

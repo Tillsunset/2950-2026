@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.flywheel;
 
 import java.util.List;
 import java.util.function.DoubleSupplier;
@@ -12,20 +12,20 @@ import frc.robot.subsystems.flywheel;
 import limelight.Limelight;
 import limelight.results.RawFiducial;
 
-public class flywheelControl extends Command {
+public class flywheelDynamic extends Command {
 	private final flywheel m_flywheel;
 	private DoubleSupplier triggerAxis;
 
-	private double feederPercent = 0.5;
+	private double feederPercent = 0.75;
 
-	private double firstThreshold = 0.2;
-	private double secondThreshold = 0.8;
+	private double firstThreshold = 0.1;
+	private double secondThreshold = 0.9;
 
 	LinearFilter filter = LinearFilter.singlePoleIIR(0.1, 0.02);
 
 	Limelight ll = new Limelight("limelight");
 
-	public flywheelControl(flywheel flywheel, CommandXboxController x) {
+	public flywheelDynamic(flywheel flywheel, CommandXboxController x) {
 		triggerAxis = x::getLeftTriggerAxis;
 		m_flywheel = flywheel;
 		addRequirements(m_flywheel);
@@ -49,7 +49,9 @@ public class flywheelControl extends Command {
 			for (RawFiducial object : raw){
 				filter.calculate(object.distToCamera);
 			}
-			double predictedRPM = Helper.rpmFromInches(filter.lastValue() * Math.cos(Math.toRadians(20)));
+			double predictedRPM = Helper.rpmFromMeters(filter.lastValue());
+
+			Helper.printRPMDistance(predictedRPM, filter.lastValue());
 			m_flywheel.setTargetRPM(predictedRPM);
 		}
 		else {
