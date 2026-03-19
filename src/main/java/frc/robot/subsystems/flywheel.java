@@ -43,7 +43,7 @@ public class flywheel extends SubsystemBase {
 				.feedForward
 					.kS(0.2)
 					// kV is now in Volts, so we multiply by the nominal voltage (12V)
-					.kV(12.0 / 5767)
+					.kV(12.0 / 6000)
 					.kA(0/(2000/1.0));
 
 			lVortexConfig.closedLoop.maxMotion
