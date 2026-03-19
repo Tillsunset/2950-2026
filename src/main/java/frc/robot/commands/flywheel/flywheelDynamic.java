@@ -21,18 +21,14 @@ public class flywheelDynamic extends Command {
 	private double firstThreshold = 0.1;
 	private double secondThreshold = 0.9;
 
-	LinearFilter filter = LinearFilter.singlePoleIIR(0.1, 0.02);
 
-	Limelight ll = new Limelight("limelight");
 
 	public flywheelDynamic(flywheel flywheel, CommandXboxController x) {
 		triggerAxis = x::getLeftTriggerAxis;
 		m_flywheel = flywheel;
 		addRequirements(m_flywheel);
 
-		ll.getSettings()
-		.withAprilTagIdFilter(List.of(2, 5, 10, 18, 21, 26))
-		.save();
+
 	}
 
 	@Override
@@ -45,13 +41,10 @@ public class flywheelDynamic extends Command {
 	public void execute() {
 		// first start flywheel 
 		if (Math.abs(triggerAxis.getAsDouble()) > firstThreshold) {
-			RawFiducial[] raw = ll.getData().getRawFiducials();
-			for (RawFiducial object : raw){
-				filter.calculate(object.distToCamera);
-			}
-			double predictedRPM = Helper.rpmFromMeters(filter.lastValue());
+			double distance = Helper.getAprilTagDist();
+			double predictedRPM = Helper.rpmFromMeters(distance);
 
-			Helper.printRPMDistance(predictedRPM, filter.lastValue());
+			Helper.printRPMDistance(predictedRPM, distance);
 			m_flywheel.setTargetRPM(predictedRPM);
 		}
 		else {

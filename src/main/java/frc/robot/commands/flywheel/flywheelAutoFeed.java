@@ -19,44 +19,33 @@ public class flywheelAutoFeed extends Command {
 
 	private boolean RPMReady = false;
 
-	LinearFilter filter = LinearFilter.singlePoleIIR(0.1, 0.02);
-
-	Limelight ll = new Limelight("limelight");
-
 	public flywheelAutoFeed(flywheel flywheel, conveyor conveyor) {
 		m_flywheel = flywheel;
 		addRequirements(m_flywheel);
 		m_conveyor = conveyor;
 		addRequirements(m_conveyor);
 
-		ll.getSettings()
-		.withAprilTagIdFilter(List.of(2, 5, 10, 18, 21, 26))
-		.save();
+
 	}
 
 	@Override
 	public void initialize() {
 		RPMReady = false;
+		m_flywheel.setLower(0);
 	}
 
 	@Override
 	public void execute() {
-		// first start flywheel 
-		RawFiducial[] raw = ll.getData().getRawFiducials();
-		for (RawFiducial object : raw){
-			filter.calculate(object.distToCamera);
-		}
-		double predictedRPM = Helper.rpmFromMeters(filter.lastValue());
+		double distance = Helper.getAprilTagDist();
+		double predictedRPM = Helper.rpmFromMeters(distance);
 
-		Helper.printRPMDistance(predictedRPM, filter.lastValue());
-
+		Helper.printRPMDistance(predictedRPM, distance);
 		m_flywheel.setTargetRPM(predictedRPM);
 
 		if (RPMReady) {
 			m_flywheel.setLower(feederPercent);
 		}
 		else {
-			m_flywheel.setLower(0);
 			// less then 10% off, start feeding, don't stop until we let go
 			RPMReady = Math.abs((m_flywheel.getCurrentRPM() - predictedRPM) / predictedRPM) < 0.1;
 		}

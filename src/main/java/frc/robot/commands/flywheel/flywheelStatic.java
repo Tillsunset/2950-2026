@@ -14,10 +14,6 @@ public class flywheelStatic extends Command {
 	private double feederPercent = 0.75;
 	private double flywheelRPM = 2400;
 
-	LinearFilter filter = LinearFilter.singlePoleIIR(0.1, 0.02);
-
-	Limelight ll = new Limelight("limelight");
-
 	public flywheelStatic(flywheel flywheel, double staticSetpoint) {
 		m_flywheel = flywheel;
 		addRequirements(m_flywheel);
@@ -33,12 +29,9 @@ public class flywheelStatic extends Command {
 
 	@Override
 	public void execute() {
-		RawFiducial[] raw = ll.getData().getRawFiducials();
-		for (RawFiducial object : raw){
-			filter.calculate(object.distToCamera);
-		}
+		double distance = Helper.getAprilTagDist();
 
-		Helper.printRPMDistance(flywheelRPM, filter.lastValue());
+		Helper.printRPMDistance(flywheelRPM, distance);
 	}
 
 	@Override

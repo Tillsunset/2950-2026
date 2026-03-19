@@ -1,10 +1,14 @@
 package frc.robot;
 
+import java.util.List;
 import java.util.Optional;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import limelight.Limelight;
+import limelight.results.RawFiducial;
 
 public class Helper {
 
@@ -104,4 +108,23 @@ public class Helper {
 
 		++i;
     }
+
+    private static LinearFilter filter = LinearFilter.singlePoleIIR(0.1, 0.02);
+
+	private static Limelight ll = new Limelight("limelight");
+
+    public static void LLSetup() {
+        ll.getSettings()
+		.withAprilTagIdFilter(List.of(2, 5, 10, 18, 21, 26))
+		.save();
+    }
+    
+    public static double getAprilTagDist() {
+    	RawFiducial[] raw = ll.getData().getRawFiducials();
+			for (RawFiducial object : raw){
+				filter.calculate(object.distToCamera);
+			}
+        return filter.lastValue();
+    }
+
 }
