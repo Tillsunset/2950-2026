@@ -138,4 +138,15 @@ public class Helper {
         return aimFilter.lastValue() - xOffset;
     }
 
+    public static void resetFilters() {
+        aimFilter.reset();
+        distFilter.reset();
+        feed0Filter();
+    }
+
+    public static void feed0Filter() {
+        distFilter.calculate(0);
+        aimFilter.calculate(0);
+    }
+
 }

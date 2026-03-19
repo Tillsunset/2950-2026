@@ -16,20 +16,15 @@ public class flywheelDynamic extends Command {
 	private double firstThreshold = 0.1;
 	private double secondThreshold = 0.9;
 
-
-
 	public flywheelDynamic(flywheel flywheel, CommandXboxController x) {
 		triggerAxis = x::getLeftTriggerAxis;
 		m_flywheel = flywheel;
 		addRequirements(m_flywheel);
-
-
 	}
 
 	@Override
 	public void initialize() {
-		// Time constant is 0.1 seconds
-		// Period is 0.02 seconds - this is the standard FRC main loop period
+		Helper.resetFilters();
 	}
 
 	@Override

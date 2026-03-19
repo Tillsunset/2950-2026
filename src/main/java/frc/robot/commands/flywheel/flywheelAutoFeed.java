@@ -26,6 +26,7 @@ public class flywheelAutoFeed extends Command {
 		RPMReady = false;
 		m_flywheel.setLower(0);
 		m_conveyor.setConveyer(0);
+		Helper.resetFilters();
 	}
 
 	@Override

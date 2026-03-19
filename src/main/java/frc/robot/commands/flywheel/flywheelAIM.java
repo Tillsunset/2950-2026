@@ -22,6 +22,7 @@ public class flywheelAIM extends Command {
 
 	@Override
 	public void initialize() {
+		Helper.resetFilters();
 	}
 
 	@Override

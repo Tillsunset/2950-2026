@@ -21,6 +21,7 @@ public class flywheelStatic extends Command {
 	public void initialize() {
 		m_flywheel.setTargetRPM(flywheelRPM);
 		m_flywheel.setLower(feederPercent);
+		Helper.resetFilters();
 	}
 
 	@Override
