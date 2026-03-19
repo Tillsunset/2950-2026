@@ -36,12 +36,12 @@ public class flywheel extends SubsystemBase {
 				.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
 				// Set PID values for Velocity control. We don't need to pass a closed
 				// loop slot, as it will default to slot 0.
-				.p(0.0002)
+				.p(0.000)
 				.i(0)
 				.d(0)
 				.outputRange(0, 1)
 				.feedForward
-					.kS(0.03)
+					.kS(0.2)
 					// kV is now in Volts, so we multiply by the nominal voltage (12V)
 					.kV(12.0 / 5767)
 					.kA(0/(2000/1.0));
