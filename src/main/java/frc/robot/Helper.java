@@ -109,22 +109,33 @@ public class Helper {
 		++i;
     }
 
-    private static LinearFilter filter = LinearFilter.singlePoleIIR(0.1, 0.02);
+    private static LinearFilter distFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
+    private static LinearFilter aimFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
 
 	private static Limelight ll = new Limelight("limelight");
+
+	private static double xOffset = 0;
 
     public static void LLSetup() {
         ll.getSettings()
 		.withAprilTagIdFilter(List.of(2, 5, 10, 18, 21, 26))
 		.save();
     }
+
+    public static void updateFilters() {
+        RawFiducial[] raw = ll.getData().getRawFiducials();
+        for (RawFiducial object : raw){
+            distFilter.calculate(object.distToCamera);
+            aimFilter.calculate(object.txnc);
+        }
+    }
     
     public static double getAprilTagDist() {
-    	RawFiducial[] raw = ll.getData().getRawFiducials();
-			for (RawFiducial object : raw){
-				filter.calculate(object.distToCamera);
-			}
-        return filter.lastValue();
+        return distFilter.lastValue();
+    }
+    
+    public static double getAprilTagAim() {
+        return aimFilter.lastValue() - xOffset;
     }
 
 }

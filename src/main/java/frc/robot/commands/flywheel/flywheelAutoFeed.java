@@ -30,6 +30,7 @@ public class flywheelAutoFeed extends Command {
 
 	@Override
 	public void execute() {
+		Helper.updateFilters();
 		double distance = Helper.getAprilTagDist();
 		double predictedRPM = Helper.rpmFromMeters(distance);
 

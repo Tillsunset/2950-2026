@@ -25,6 +25,7 @@ public class flywheelStatic extends Command {
 
 	@Override
 	public void execute() {
+		Helper.updateFilters();
 		double distance = Helper.getAprilTagDist();
 
 		Helper.printRPMDistance(flywheelRPM, distance);

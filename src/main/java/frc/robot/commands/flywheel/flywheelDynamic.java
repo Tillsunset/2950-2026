@@ -36,6 +36,8 @@ public class flywheelDynamic extends Command {
 	public void execute() {
 		// first start flywheel 
 		if (Math.abs(triggerAxis.getAsDouble()) > firstThreshold) {
+			Helper.updateFilters();
+
 			double distance = Helper.getAprilTagDist();
 			double predictedRPM = Helper.rpmFromMeters(distance);
 
