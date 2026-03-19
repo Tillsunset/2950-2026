@@ -50,6 +50,7 @@ public class flywheelAutoFeed extends Command {
 	public void end(boolean interrupted) {
 		m_flywheel.setTargetRPM(0);
 		m_flywheel.setLower(0);
+		m_conveyor.setConveyer(0);
 	}
 
 	@Override
