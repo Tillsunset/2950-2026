@@ -1,21 +1,16 @@
 package frc.robot.commands.flywheel;
 
-import java.util.List;
-
-import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Helper;
 import frc.robot.subsystems.flywheel;
 import frc.robot.subsystems.conveyor;
-
-import limelight.Limelight;
-import limelight.results.RawFiducial;
 
 public class flywheelAutoFeed extends Command {
 	private final flywheel m_flywheel;
 	private final conveyor m_conveyor;
 
 	private double feederPercent = 0.75;
+	private double conveyorPercent = 0.5;
 
 	private boolean RPMReady = false;
 
@@ -24,14 +19,13 @@ public class flywheelAutoFeed extends Command {
 		addRequirements(m_flywheel);
 		m_conveyor = conveyor;
 		addRequirements(m_conveyor);
-
-
 	}
 
 	@Override
 	public void initialize() {
 		RPMReady = false;
 		m_flywheel.setLower(0);
+		m_conveyor.setConveyer(0);
 	}
 
 	@Override
@@ -44,6 +38,7 @@ public class flywheelAutoFeed extends Command {
 
 		if (RPMReady) {
 			m_flywheel.setLower(feederPercent);
+			m_conveyor.setConveyer(conveyorPercent);
 		}
 		else {
 			// less then 10% off, start feeding, don't stop until we let go

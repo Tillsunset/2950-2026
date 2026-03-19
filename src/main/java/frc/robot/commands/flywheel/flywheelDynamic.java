@@ -1,16 +1,11 @@
 package frc.robot.commands.flywheel;
 
-import java.util.List;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Helper;
 import frc.robot.subsystems.flywheel;
-
-import limelight.Limelight;
-import limelight.results.RawFiducial;
 
 public class flywheelDynamic extends Command {
 	private final flywheel m_flywheel;

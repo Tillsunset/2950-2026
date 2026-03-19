@@ -1,12 +1,8 @@
 package frc.robot.commands.flywheel;
 
-import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Helper;
 import frc.robot.subsystems.flywheel;
-
-import limelight.Limelight;
-import limelight.results.RawFiducial;
 
 public class flywheelStatic extends Command {
 	private final flywheel m_flywheel;
