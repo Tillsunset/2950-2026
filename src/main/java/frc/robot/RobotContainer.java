@@ -34,6 +34,7 @@ public class RobotContainer {
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	final CommandXboxController controller0 = new CommandXboxController(0);
+	final CommandXboxController controller1 = new CommandXboxController(1);
 
 	public intake m_intake = new intake();
 	private intakeControl m_intakeControl = new intakeControl(m_intake, controller0);
@@ -62,19 +63,19 @@ public class RobotContainer {
 	 * by angular velocity.
 	 */
 	SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-			() -> controller0.getLeftY() * -1,
-			() -> controller0.getLeftX() * -1)
-			.withControllerRotationAxis(controller0::getRightX)
+			() -> controller1.getLeftY() * -1,
+			() -> controller1.getLeftX() * -1)
+			.withControllerRotationAxis(controller1::getRightX)
 			.deadband(OperatorConstants.DEADBAND)
 			.scaleTranslation(0.8)
 			.allianceRelativeControl(true);
 
 	/**
-	 * Clone's the angular velocity input stream and converts it to a fieldRelative
+	 * "''Clone's the angular velocity input stream and converts it to a fieldRelative
 	 * input stream.
 	 */
-	SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(controller0::getRightX,
-			controller0::getRightY)
+	SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(controller1::getRightX,
+			controller1::getRightY)
 			.headingWhile(true);
 
 	/**
@@ -93,8 +94,8 @@ public class RobotContainer {
 		DriverStation.silenceJoystickConnectionWarning(true);
 
 		// Set the default auto (do nothing)
-		autoChooser.setDefaultOption("Do Nothing", Commands.runOnce(drivebase::zeroGyroWithAlliance)
-				.andThen(Commands.none()));// Set the default auto (do nothing)
+		// autoChooser.setDefaultOption("Do Nothing", Commands.runOnce(drivebase::zeroGyroWithAlliance)
+		// 		.andThen(Commands.none()));// Set the default auto (do nothing)
 
 		autoChooser.setDefaultOption("Try to shoot balls", 
 			Commands.parallel(
@@ -135,18 +136,19 @@ public class RobotContainer {
 		m_flywheel.setDefaultCommand(m_flywheelControl);
 		m_conveyor.setDefaultCommand(m_conveyorControl);
 
-		controller0.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-		controller0.rightBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+		controller1.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+		controller1.rightBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 
 		controller0.povRight().whileTrue(m_flywheelControl2400);
 		controller0.povDown().whileTrue(m_flywheelControl2500);
 		controller0.povLeft().whileTrue(m_flywheelControl3000);
 		controller0.povUp().whileTrue(m_flywheelControl3500);
-		controller0.leftBumper().whileTrue(m_flywheelAutoFeed);
-		// controller0.leftBumper().whileTrue(
-		// 	Commands.parallel(
-		// 		new flywheelAutoFeed(m_flywheel, m_conveyor),
-		// 		new flywheelAIM(drivebase)));
+		// controller0.leftBumper().whileTrue(m_flywheelAutoFeed);
+		controller0.leftBumper().whileTrue(
+			Commands.parallel(
+				new flywheelAIM(drivebase),
+				new flywheelAutoFeed(m_flywheel, m_conveyor)
+				));
 	}
 
 	/**

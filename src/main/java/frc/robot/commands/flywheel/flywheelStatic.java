@@ -7,7 +7,7 @@ import frc.robot.subsystems.flywheel;
 public class flywheelStatic extends Command {
 	private final flywheel m_flywheel;
 
-	private double feederPercent = 0.75;
+	private double feederPercent = 1;
 	private double flywheelRPM = 2400;
 
 	public flywheelStatic(flywheel flywheel, double staticSetpoint) {

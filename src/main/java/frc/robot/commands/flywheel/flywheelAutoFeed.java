@@ -9,8 +9,8 @@ public class flywheelAutoFeed extends Command {
 	private final flywheel m_flywheel;
 	private final conveyor m_conveyor;
 
-	private double feederPercent = 0.75;
-	private double conveyorPercent = 0.5;
+	private double feederPercent = 1;
+	private double conveyorPercent = 1;
 
 	private boolean RPMReady = false;
 

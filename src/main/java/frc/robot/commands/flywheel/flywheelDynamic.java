@@ -11,7 +11,7 @@ public class flywheelDynamic extends Command {
 	private final flywheel m_flywheel;
 	private DoubleSupplier triggerAxis;
 
-	private double feederPercent = 0.75;
+	private double feederPercent = 1;
 
 	private double firstThreshold = 0.1;
 	private double secondThreshold = 0.9;

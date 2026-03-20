@@ -13,7 +13,7 @@ public class intakeControl extends Command {
 
 	// 1 unit = 1 rotation
 	// encoder is reset to 0 on robot start, and teleop start
-	private double armMin = 0;
+	private double armMin = (30/360.) * (32/12.) * (45/1.);
 	// 110 degrees of arm rotaion, 32:12 reduction, 45:1 gear reduction
 	private double armMax = (110/360.) * (32/12.) * (45/1.);
 

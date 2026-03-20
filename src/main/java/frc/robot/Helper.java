@@ -78,18 +78,18 @@ public class Helper {
     }
 
     public static double rpmFromMeters(double meters) {
-        double x1 = 1.0;
+        double x1 = 1.125;
         double y1 = 2500.0;
-        double x2 = 1.5;
+        double x2 = 1.714;
         double y2 = 3000.0;
-        double x3 = 2.0;
+        double x3 = 2.5;
         double y3 = 3500.0;
 
         double rpmGuess = 2400.0;
 
         if (meters > x2) {
             rpmGuess = y2 + (meters - x2) * (y3 - y2) / (x3-x2);
-            return MathUtil.clamp(rpmGuess, 2400, 3500);
+            return MathUtil.clamp(rpmGuess, 2400, 4000);
         }
         else { // meters < x2
             rpmGuess = y1 + (meters - x1) * (y2 - y1) / (x2-x1);

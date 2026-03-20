@@ -36,14 +36,14 @@ public class flywheel extends SubsystemBase {
 				.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
 				// Set PID values for Velocity control. We don't need to pass a closed
 				// loop slot, as it will default to slot 0.
-				.p(0.000)
+				.p(0.00075)
 				.i(0)
 				.d(0)
 				.outputRange(0, 1)
 				.feedForward
-					.kS(0.2)
+					.kS(0.15)
 					// kV is now in Volts, so we multiply by the nominal voltage (12V)
-					.kV(12.0 / 6000)
+					.kV(12.0 / 6800)
 					.kA(0/(2000/1.0));
 
 			lVortexConfig.closedLoop.maxMotion
