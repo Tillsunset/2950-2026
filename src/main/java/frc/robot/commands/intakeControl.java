@@ -1,7 +1,9 @@
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.intake;
@@ -13,7 +15,7 @@ public class intakeControl extends Command {
 
 	// 1 unit = 1 rotation
 	// encoder is reset to 0 on robot start, and teleop start
-	private double armMin = (30/360.) * (32/12.) * (45/1.);
+	private double armMin = (15/360.) * (32/12.) * (45/1.);
 	// 110 degrees of arm rotaion, 32:12 reduction, 45:1 gear reduction
 	private double armMax = (110/360.) * (32/12.) * (45/1.);
 

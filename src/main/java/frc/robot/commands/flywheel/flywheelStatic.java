@@ -2,17 +2,25 @@ package frc.robot.commands.flywheel;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Helper;
+import frc.robot.subsystems.conveyor;
 import frc.robot.subsystems.flywheel;
 
 public class flywheelStatic extends Command {
 	private final flywheel m_flywheel;
+	private final conveyor m_conveyor;
+
+	private double conveyorPercent = 1;
 
 	private double feederPercent = 1;
-	private double flywheelRPM = 2400;
+	private double flywheelRPM = 1500;
 
-	public flywheelStatic(flywheel flywheel, double staticSetpoint) {
+	private boolean RPMReady = false;
+
+	public flywheelStatic(flywheel flywheel, conveyor conveyor, double staticSetpoint) {
 		m_flywheel = flywheel;
 		addRequirements(m_flywheel);
+		m_conveyor = conveyor;
+		addRequirements(m_conveyor);
 
 		flywheelRPM = staticSetpoint;
 	}
@@ -20,8 +28,9 @@ public class flywheelStatic extends Command {
 	@Override
 	public void initialize() {
 		m_flywheel.setTargetRPM(flywheelRPM);
-		m_flywheel.setLower(feederPercent);
+		m_flywheel.setLower(-.1);
 		Helper.resetFilters();
+		RPMReady = false;
 	}
 
 	@Override
@@ -30,6 +39,15 @@ public class flywheelStatic extends Command {
 		double distance = Helper.getAprilTagDist();
 
 		Helper.printRPMDistance(flywheelRPM, distance);
+
+		if (RPMReady) {
+			m_flywheel.setLower(feederPercent);
+			m_conveyor.setConveyer(conveyorPercent);
+		}
+		else {
+			// less then 10% off, start feeding, don't stop until we let go
+			RPMReady = Math.abs((m_flywheel.getCurrentRPM() - flywheelRPM) / flywheelRPM) < 0.1;
+		}
 	}
 
 	@Override

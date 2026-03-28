@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		Helper.LLSetup();
+		m_robotContainer.m_intake.resetEncoder();
 		m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
 		if (m_autonomousCommand != null) {
@@ -50,8 +51,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-		Helper.LLSetup();
-		m_robotContainer.m_intake.resetEncoder();
+		// Helper.LLSetup();
+		// m_robotContainer.m_intake.resetEncoder();
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}

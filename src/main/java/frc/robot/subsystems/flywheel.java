@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class flywheel extends SubsystemBase {
 
-	private SparkFlex leftVortex = new SparkFlex(23, MotorType.kBrushless);
+	public SparkFlex leftVortex = new SparkFlex(23, MotorType.kBrushless);
 	private SparkFlex rightVortex = new SparkFlex(22, MotorType.kBrushless);
 
 	private SparkMax frontWheel = new SparkMax(15, MotorType.kBrushless);

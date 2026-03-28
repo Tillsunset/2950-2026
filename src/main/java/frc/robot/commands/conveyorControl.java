@@ -33,7 +33,7 @@ public class conveyorControl extends Command {
 	public void execute() {
 		if ((Math.abs(triggerLAxis.getAsDouble()) > flywheelThreshold) ||
 			(Math.abs(triggerRAxis.getAsDouble()) > intakeThreshold)) {
-				m_conveyor.setConveyer(conveyorPercent);
+				// m_conveyor.setConveyer(conveyorPercent);
 		}
 		else {
 			m_conveyor.setConveyer(0);

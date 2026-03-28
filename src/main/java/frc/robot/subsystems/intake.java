@@ -37,14 +37,15 @@ public class intake extends SubsystemBase {
 			.smartCurrentLimit(20)
 			.closedLoop
 			.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-				.p(0.015)
+				.p(0.025)
 				.d(0)
 				.outputRange(-1, 1);
 
 
 		SparkMaxConfig lConfig = new SparkMaxConfig();
 		lConfig.apply(rConfig)
-			.inverted(false);
+		.inverted(false);
+			// .follow(17,true);
 			// no follow due to 'loose' arm
 
 		

@@ -93,7 +93,7 @@ public class Helper {
         }
         else { // meters < x2
             rpmGuess = y1 + (meters - x1) * (y2 - y1) / (x2-x1);
-            return MathUtil.clamp(rpmGuess, 2400, 3500);
+            return MathUtil.clamp(rpmGuess, 2400, 4000);
         }
     }
 

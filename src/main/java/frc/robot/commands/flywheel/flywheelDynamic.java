@@ -25,22 +25,18 @@ public class flywheelDynamic extends Command {
 	@Override
 	public void initialize() {
 		Helper.resetFilters();
+		m_flywheel.setLower(-.1);
 	}
 
 	@Override
 	public void execute() {
 		// first start flywheel 
 		if (Math.abs(triggerAxis.getAsDouble()) > firstThreshold) {
-			Helper.updateFilters();
 
-			double distance = Helper.getAprilTagDist();
-			double predictedRPM = Helper.rpmFromMeters(distance);
-
-			Helper.printRPMDistance(predictedRPM, distance);
-			m_flywheel.setTargetRPM(predictedRPM);
+			m_flywheel.leftVortex.set(1);
 		}
 		else {
-			m_flywheel.setTargetRPM(0);
+			m_flywheel.leftVortex.set(0);
 		}
 
 		m_flywheel.setLower(feederPercent *    ((Math.abs(triggerAxis.getAsDouble()) > secondThreshold) ? 1 : 0)); // then start feeding 
