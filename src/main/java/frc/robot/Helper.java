@@ -78,9 +78,9 @@ public class Helper {
     }
 
     public static double rpmFromMeters(double meters) {
-        double x1 = 1.125;
+        double x1 = 1.19;
         double y1 = 2500.0;
-        double x2 = 1.714;
+        double x2 = 1.88;
         double y2 = 3000.0;
         double x3 = 2.5;
         double y3 = 3500.0;
@@ -118,8 +118,10 @@ public class Helper {
 
     public static void LLSetup() {
         ll.getSettings()
-		.withAprilTagIdFilter(List.of(2, 5, 10, 18, 21, 26))
+		.withAprilTagIdFilter(List.of(5,21,8,24,9,25,10,26,11,27,2,18))
 		.save();
+
+        //
     }
 
     public static void updateFilters() {

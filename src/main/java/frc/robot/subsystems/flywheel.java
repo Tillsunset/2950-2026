@@ -20,8 +20,8 @@ public class flywheel extends SubsystemBase {
 	public SparkFlex leftVortex = new SparkFlex(23, MotorType.kBrushless);
 	private SparkFlex rightVortex = new SparkFlex(22, MotorType.kBrushless);
 
-	private SparkMax frontWheel = new SparkMax(15, MotorType.kBrushless);
-	private SparkMax backWheel = new SparkMax(2, MotorType.kBrushless);
+	private SparkMax frontWheel = new SparkMax(17, MotorType.kBrushless);
+	private SparkMax backWheel = new SparkMax(4, MotorType.kBrushless);
 
 	private SparkClosedLoopController closedLoopController = leftVortex.getClosedLoopController();
 
@@ -36,7 +36,8 @@ public class flywheel extends SubsystemBase {
 				.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
 				// Set PID values for Velocity control. We don't need to pass a closed
 				// loop slot, as it will default to slot 0.
-				.p(0.00075)
+				// .p(0.00075)
+				.p(0.0)
 				.i(0)
 				.d(0)
 				.outputRange(0, 1)
@@ -44,12 +45,7 @@ public class flywheel extends SubsystemBase {
 					.kS(0.15)
 					// kV is now in Volts, so we multiply by the nominal voltage (12V)
 					.kV(12.0 / 6800)
-					.kA(0/(2000/1.0));
-
-			lVortexConfig.closedLoop.maxMotion
-				// Set MAXMotion parameters for position control. We don't need to pass
-				// a closed loop slot, as it will default to slot 0.
-				.maxAcceleration(1000);
+					.kA(1.0/(2000/1.0));
 
 		SparkFlexConfig rVortexConfig = new SparkFlexConfig();
 			rVortexConfig.apply(lVortexConfig)
@@ -60,13 +56,13 @@ public class flywheel extends SubsystemBase {
 		rightVortex.configure(rVortexConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
 		SparkMaxConfig fConfig = new SparkMaxConfig();
-			fConfig.inverted(true)
+			fConfig.inverted(false)
 				.idleMode(IdleMode.kBrake)
 				.smartCurrentLimit(40);
 
 		SparkMaxConfig bConfig = new SparkMaxConfig();
 			bConfig.apply(fConfig)
-				.inverted(false);
+				.inverted(true);
 
 		frontWheel.configure(fConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 		backWheel.configure(bConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -82,7 +78,7 @@ public class flywheel extends SubsystemBase {
 	}
 
 	public void setTargetRPM(double rpm) {
-		closedLoopController.setSetpoint(rpm, ControlType.kMAXMotionVelocityControl);
+		closedLoopController.setSetpoint(rpm, ControlType.kVelocity);
 	}
 
 	public double getCurrentRPM() {

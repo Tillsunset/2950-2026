@@ -4,23 +4,30 @@
 
 package frc.robot;
 
+import java.io.File;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.conveyorControl;
+import frc.robot.commands.intakeControl;
+import frc.robot.commands.flywheel.flywheelAIM;
+import frc.robot.commands.flywheel.flywheelAutoFeed;
+import frc.robot.commands.flywheel.flywheelDynamic;
+import frc.robot.commands.flywheel.flywheelStatic;
+import frc.robot.subsystems.conveyor;
+import frc.robot.subsystems.flywheel;
+import frc.robot.subsystems.intake;
 import frc.robot.subsystems.swervedrive;
-import java.io.File;
 import swervelib.SwerveInputStream;
-
-import frc.robot.commands.*;
-import frc.robot.commands.flywheel.*;
-import frc.robot.subsystems.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -38,6 +45,7 @@ public class RobotContainer {
 	final CommandXboxController controller1 = new CommandXboxController(1);
 
 
+
 	public intake m_intake = new intake();
 	private intakeControl m_intakeControl = new intakeControl(m_intake, controller0);
 
@@ -46,10 +54,10 @@ public class RobotContainer {
 
 	private flywheel m_flywheel = new flywheel();
 	private flywheelDynamic m_flywheelControl = new flywheelDynamic(m_flywheel, controller0);
-	private flywheelStatic m_flywheelControl2400 = new flywheelStatic(m_flywheel, m_conveyor, 2400); // minimum, right next to hopper
-	private flywheelStatic m_flywheelControl2500 = new flywheelStatic(m_flywheel, m_conveyor, 2500);
-	private flywheelStatic m_flywheelControl3000 = new flywheelStatic(m_flywheel, m_conveyor, 3000);
-	private flywheelStatic m_flywheelControl3500 = new flywheelStatic(m_flywheel, m_conveyor, 3500);
+	private flywheelStatic m_flywheelControl2400 = new flywheelStatic(m_flywheel, m_conveyor, 3000); // minimum, right next to hopper
+	private flywheelStatic m_flywheelControl2500 = new flywheelStatic(m_flywheel, m_conveyor, 3500);
+	private flywheelStatic m_flywheelControl3000 = new flywheelStatic(m_flywheel, m_conveyor, 4500);
+	private flywheelStatic m_flywheelControl3500 = new flywheelStatic(m_flywheel, m_conveyor, 6500);
 	private flywheelAutoFeed m_flywheelAutoFeed = new flywheelAutoFeed(m_flywheel, m_conveyor);
 
 	// The robot's subsystems and commands are defined here...
@@ -64,10 +72,23 @@ public class RobotContainer {
 	 * Converts driver input into a field-relative ChassisSpeeds that is controlled
 	 * by angular velocity.
 	 */
+	private double scale = 1;
 	SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-			() -> controller0.getLeftY() * -1,
-			() -> controller0.getLeftX() * -1)
-			.withControllerRotationAxis(controller0::getRightX)
+			() -> { if (controller0.getHID().getRightBumperButton()) {
+						scale = 0.33;
+					}
+					else {
+						scale = 1;
+					}
+					return controller0.getLeftY() * -1 * scale; },
+			() -> { if (controller0.getHID().getRightBumperButton()) {
+						scale = 0.33;
+					}
+					else {
+						scale = 1;
+					}
+					return controller0.getLeftX() * -1 * scale;})
+			.withControllerRotationAxis(() -> {return controller0.getRightX() * -1;})
 			.deadband(OperatorConstants.DEADBAND)
 			.scaleTranslation(0.8)
 			.allianceRelativeControl(true);
@@ -76,8 +97,9 @@ public class RobotContainer {
 	 * "''Clone's the angular velocity input stream and converts it to a fieldRelative
 	 * input stream.
 	 */
-	SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(()->controller0.getRightX()*-1,()->
-			controller0.getRightY()*-1)
+	SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(
+		()->controller0.getRightX()*-1,
+		()->controller0.getRightY()*-1)
 			.headingWhile(true);
 
 	/**
@@ -99,15 +121,29 @@ public class RobotContainer {
 		// autoChooser.setDefaultOption("Do Nothing", Commands.runOnce(drivebase::zeroGyroWithAlliance)
 		// 		.andThen(Commands.none()));// Set the default auto (do nothing)
 
-		autoChooser.setDefaultOption("Try to shoot balls", 
+
+		autoChooser.setDefaultOption("Drive back and shoot static", 
+			Commands.runOnce(drivebase::zeroGyroWithAlliance).withTimeout(.2)
+				.andThen(drivebase.driveForward().withTimeout(0.5))
+				.andThen(new flywheelStatic(m_flywheel, m_conveyor, 2600)).withTimeout(18)
+				);
+
+		
+		autoChooser.addOption("Try to shoot balls", 
 			Commands.parallel(
 				new flywheelAutoFeed(m_flywheel, m_conveyor),
 				new flywheelAIM(drivebase)).withTimeout(19));
 
-		// Add a simple auto option to have the robot drive forward for 1 second then
+		// Add a simple auto option to have the robot drive ford for 1 second then
 		// stop
-		// autoChooser.addOption("Drive Forward", Commands.runOnce(drivebase::zeroGyroWithAlliance).withTimeout(.2)
-		// 		.andThen(drivebase.driveForward().withTimeout(1)));
+		autoChooser.addOption("Drive back and shoot", 
+			Commands.runOnce(drivebase::zeroGyroWithAlliance).withTimeout(.2)
+				.andThen(drivebase.driveForward().withTimeout(.51))
+				.andThen(Commands.parallel(
+					new flywheelAutoFeed(m_flywheel, m_conveyor),
+					new flywheelAIM(drivebase)).withTimeout(18))
+				);
+
 		// Put the autoChooser on the SmartDashboard
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -133,14 +169,14 @@ public class RobotContainer {
 		Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
 		Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
 
-		drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
+		drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
 		m_intake.setDefaultCommand(m_intakeControl);
 		m_flywheel.setDefaultCommand(m_flywheelControl);
 		m_conveyor.setDefaultCommand(m_conveyorControl);
 
-		controller0.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-		controller0.rightBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-
+		//controller0.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+		// controller0.rightBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+		
 		controller0.povRight().whileTrue(m_flywheelControl2400);
 		controller0.povDown().whileTrue(m_flywheelControl2500);
 		controller0.povLeft().whileTrue(m_flywheelControl3000);

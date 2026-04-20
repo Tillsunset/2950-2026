@@ -3,6 +3,7 @@ package frc.robot.commands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -15,9 +16,9 @@ public class intakeControl extends Command {
 
 	// 1 unit = 1 rotation
 	// encoder is reset to 0 on robot start, and teleop start
-	private double armMin = (15/360.) * (32/12.) * (45/1.);
+	private double armMin = (0/360.) * (32/12.) * (45/1.);
 	// 110 degrees of arm rotaion, 32:12 reduction, 45:1 gear reduction
-	private double armMax = (110/360.) * (32/12.) * (45/1.);
+	private double armMax = (55/360.) * (32/12.) * (45/1.);
 
 	public intakeControl(intake intake, CommandXboxController x) {
 		triggerAxis = x::getRightTriggerAxis;
@@ -32,9 +33,14 @@ public class intakeControl extends Command {
 	@Override
 	public void execute() {
 		// scales the first half of the left trigger to arm position
-		double armScaled = armMin + (armMax - armMin) * (Math.min(0.5, Math.abs(triggerAxis.getAsDouble())) / 0.5);
+
+		double armScaled = armMin + (armMax - armMin) * (Math.min(0.5, triggerAxis.getAsDouble()) / 0.5);
 				// scales the first half trigger to full wheel
-				double wheelScaled = (Math.min(0.5, Math.abs(triggerAxis.getAsDouble())) / 0.5);
+		double wheelScaled = (Math.min(0.9, 
+			Math.max(
+				Math.abs(triggerAxis.getAsDouble()) - 0.5,
+				0) 
+			/ 0.5));
 
 		m_intake.setWheel(wheelScaled);
 		m_intake.updateTargetAngle(armScaled);
